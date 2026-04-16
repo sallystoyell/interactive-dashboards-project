@@ -1,0 +1,11 @@
+[project]
+name = "interactive-dashboards-project"
+version = "0.1.0"
+requires-python = ">=3.13"
+dependencies = [
+    "ipyniivue>=2.4.4",
+    "marimo>=0.23.1",
+    "nilearn>=0.13.1",
+    "numpy>=2.4.4",
+    "pandas>=3.0.2",
+]
