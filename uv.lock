@@ -238,6 +238,7 @@ source = { virtual = "." }
 dependencies = [
     { name = "ipyniivue" },
     { name = "marimo" },
+    { name = "nibabel" },
     { name = "nilearn" },
     { name = "numpy" },
     { name = "pandas" },
@@ -247,6 +248,7 @@ dependencies = [
 requires-dist = [
     { name = "ipyniivue", specifier = ">=2.4.4" },
     { name = "marimo", specifier = ">=0.23.1" },
+    { name = "nibabel", specifier = ">=5.4.2" },
     { name = "nilearn", specifier = ">=0.13.1" },
     { name = "numpy", specifier = ">=2.4.4" },
     { name = "pandas", specifier = ">=3.0.2" },
