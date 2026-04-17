@@ -15,6 +15,7 @@ def _():
     from scipy.spatial import KDTree
     import numpy as np
 
+
     return KDTree, NiiVue, Path, datasets, mo, nib
 
 
@@ -54,7 +55,8 @@ def _(mo):
 @app.cell
 def _(mo):
     get_label, set_label = mo.state("Hover over brain...")
-    return get_label, set_label
+    get_region, set_region = mo.state(None)
+    return get_label, set_label, set_region
 
 
 @app.cell
@@ -85,14 +87,14 @@ def _(KDTree, fsaverage, nib):
 
 
 @app.cell
-def _(NiiVue, Path, fsaverage, hemi, hemisphere, set_label):
+def _(NiiVue, Path, fsaverage, hemi, hemisphere, set_label, set_region):
     meshes = []
-    if hemi.value in ("Left"):
+    if hemi.value in "Left":
         meshes.append({
             "path": Path(fsaverage["infl_left"]),
             "layers": [{"path": Path("data/atlases/lh.HCPMMP1.label.gii")}]
         })
-    if hemi.value in ("Right"):
+    if hemi.value in "Right":
         meshes.append({
             "path": Path(fsaverage["infl_right"]),
             "layers": [{"path": Path("data/atlases/rh.HCPMMP1.label.gii")}]
@@ -110,11 +112,15 @@ def _(NiiVue, Path, fsaverage, hemi, hemisphere, set_label):
             x, y, z = [float(v) for v in coords_str.split("×")]
             h = hemisphere[hemi.value]
             dist, idx = h["tree"].query([x, y, z])
-            region = h["names"][h["labels"][idx]]
+            parcel_id = int(h["labels"][idx])
+            region = h["names"][parcel_id]
+
             set_label(f"{hemi.value} | {region} | vertex: {idx} | {coords_str}")
+            set_region({"hemi": hemi.value, "parcel_id": parcel_id, "name": region})
         except Exception as e:
             set_label(f"Error: {e}")
-    
+
+
     nv
     return
 
@@ -123,7 +129,6 @@ def _(NiiVue, Path, fsaverage, hemi, hemisphere, set_label):
 def _(get_label, mo):
 
     mo.md(get_label())
-
     return
 
 
